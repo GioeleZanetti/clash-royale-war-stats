@@ -29,12 +29,6 @@ impl RoyaleApi{
         json
     }
 
-    pub async fn request_war_stats(&self, clan_tag: &str) -> String {
-        let url = format!("https://api.clashroyale.com/v1/clans/{}/currentwar", &clan_tag);
-        let response = self.request(&url).await;
-        serde_json::to_string_pretty(&response).unwrap()
-    }
-
     pub async fn request_player_stats(&self, player_tag: &str) -> String {
         let url = format!("https://api.clashroyale.com/v1/players/{}", &player_tag);
         let response = self.request(&url).await;
