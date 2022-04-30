@@ -1,24 +1,32 @@
 mod royale_api;
 mod config;
 mod handler;
+mod db;
 use handler::Handler;
 use config::Config;
 use royale_api::RoyaleApi;
 use rocket::State;
+use db::{MongoClient, MongoDb};
 #[macro_use] extern crate rocket;
 
-#[launch]
-fn rocket() -> _ {
+#[rocket::main]
+async fn main() -> Result<(), rocket::Error> {
     let json = Config::from_str(include_str!("config.json"));
     let config = Config::new(json);
     let key = config.read_config(&"key");
     let api = RoyaleApi::new(key);
-    let handler = Handler::new(api, config);
+    let connection = config.read_config(&"connection");
+    let client = MongoClient::from_string(connection).await;
+    let dbname = config.read_config(&"dbname");
+    let database = MongoDb::new(client, &dbname);
+    let handler = Handler::new(api, config, database);
 
     rocket::build()
         .manage(handler)
-        .mount("/", routes![player])
-        .mount("/", routes![warlog])
+        .mount("/api", routes![player])
+        .mount("/api", routes![warlog])
+        .launch()
+        .await
 }
 
 
