@@ -1,0 +1,3 @@
+toglerie option in update e delete
+
+vedere cosa fare con MongoClient e Parser

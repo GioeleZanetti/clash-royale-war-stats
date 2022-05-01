@@ -1,4 +1,4 @@
-use mongodb::{bson::{Document, oid::ObjectId}, Client, Database, options::{ClientOptions}};
+use mongodb::{bson::{Document, oid::ObjectId}, Client, Database, options::*, error::Error};
 use futures::stream::TryStreamExt;
 
 pub struct MongoClient{}
@@ -30,27 +30,27 @@ impl MongoDb{
         }
     }
 
-    pub async fn find_one_in_collection(&self, collection: &str, filter: Document) -> Result<Option<Document>, mongodb::error::Error> {
+    pub async fn find_one_in_collection(&self, collection: &str, filter: Document, options: FindOneOptions) -> Result<Option<Document>, Error> {
         let collection = self.database.collection(collection);
         let document = collection
         .find_one(
             filter,
-            None,
+            options,
         ).await?;
         Ok(document)
     }
 
-    pub async fn find_in_collection(&self, collection: &str, filter: Document) -> Result<mongodb::Cursor<Document>, mongodb::error::Error> {
-        let collection = self.database.collection::<Document>(collection);
+    pub async fn find_in_collection<T>(&self, collection: &str, filter: Document, options: FindOptions) -> Result<mongodb::Cursor<T>, Error> {
+        let collection = self.database.collection::<T>(collection);
         let documents = collection
         .find(
             filter,
-            None,
+            options,
         ).await?;
         Ok(documents)
     }
 
-    pub async fn insert_into_collection(&self, collection: &str, document: Document) -> Result<Option<ObjectId>, mongodb::error::Error> {
+    pub async fn insert_into_collection(&self, collection: &str, document: Document) -> Result<Option<ObjectId>, Error> {
         let collection = self.database.collection::<Document>(collection);
         let result = collection.insert_one(
             document, 
@@ -60,25 +60,29 @@ impl MongoDb{
         Ok(id)
     }
 
-    pub async fn update_from_collection(&self, collection: &str, filter: Document, update: Document) -> Result<Option<u64>, mongodb::error::Error> {
+    pub async fn update_from_collection(&self, collection: &str, filter: Document, update: Document) -> Result<u64, Error> {
         let collection = self.database.collection::<Document>(collection);
         let result = collection.update_one(
             filter,
             update, 
             None
         ).await?;
-        let id = result.modified_count;
-        Ok(Some(id))
+        let count = result.modified_count;
+        Ok(count)
     }
 
-    pub async fn delete_from_collection(&self, collection: &str, filter: Document) -> Result<Option<u64>, mongodb::error::Error> {
+    pub async fn delete_from_collection(&self, collection: &str, filter: Document) -> Result<u64, Error> {
         let collection = self.database.collection::<Document>(collection);
         let result = collection.delete_one(
             filter,
             None
         ).await?;
         let count = result.deleted_count;
-        Ok(Some(count))
+        Ok(count)
+    }
+
+    pub fn to_string(document: &Document) -> String {
+        serde_json::to_string_pretty(document).unwrap()
     }
 
 }

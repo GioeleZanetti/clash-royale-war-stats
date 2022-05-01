@@ -29,16 +29,14 @@ impl RoyaleApi{
         json
     }
 
-    pub async fn request_player_stats(&self, player_tag: &str) -> String {
+    pub async fn request_player_stats(&self, player_tag: &str) -> Value {
         let url = format!("https://api.clashroyale.com/v1/players/{}", &player_tag);
-        let response = self.request(&url).await;
-        serde_json::to_string_pretty(&response).unwrap()
+        self.request(&url).await
     }
 
-    pub async fn request_current_riverrace(&self, clan_tag: &str) -> String {
+    pub async fn request_current_riverrace(&self, clan_tag: &str) -> Value {
         let url = format!("https://api.clashroyale.com/v1/clans/{}/currentriverrace", &clan_tag);
-        let response = self.request(&url).await;
-        serde_json::to_string_pretty(&response).unwrap()
+        self.request(&url).await
     }
 
 }

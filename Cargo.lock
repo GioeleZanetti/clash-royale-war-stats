@@ -173,10 +173,12 @@ dependencies = [
 name = "clashroyale"
 version = "0.1.0"
 dependencies = [
+ "chrono",
  "futures",
  "mongodb",
  "reqwest",
  "rocket",
+ "serde",
  "serde_json",
 ]
 

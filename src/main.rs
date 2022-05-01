@@ -2,6 +2,8 @@ mod royale_api;
 mod config;
 mod handler;
 mod db;
+mod models;
+mod date_calculator;
 use handler::Handler;
 use config::Config;
 use royale_api::RoyaleApi;
