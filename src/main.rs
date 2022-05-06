@@ -4,6 +4,7 @@ mod handler;
 mod db;
 mod models;
 mod date_calculator;
+mod parser;
 use handler::Handler;
 use config::Config;
 use royale_api::RoyaleApi;
@@ -26,7 +27,10 @@ async fn main() -> Result<(), rocket::Error> {
     rocket::build()
         .manage(handler)
         .mount("/api", routes![player])
-        .mount("/api", routes![warlog])
+        .mount("/api", routes![riverrace])
+        .mount("/api", routes![clan])
+        .mount("/api", routes![past_riverrace])
+        .mount("/setup", routes![insert_riverrace])
         .launch()
         .await
 }
@@ -38,6 +42,21 @@ async fn player(handler: &State<Handler>) -> String {
 }
 
 #[get("/riverrace")]
-async fn warlog(handler: &State<Handler>) -> String {
+async fn riverrace(handler: &State<Handler>) -> String {
     handler.get_current_riverrace().await
+}
+
+#[get("/clan/<tag>")]
+async fn clan(tag: String, handler: &State<Handler>) -> String {
+    handler.get_clan_info(tag).await
+}
+
+#[get("/pastriverrace")]
+async fn past_riverrace(handler: &State<Handler>) -> String {
+    handler.get_past_riverrace().await
+}
+
+#[get("/riverrace")]
+async fn insert_riverrace(handler: &State<Handler>){
+    handler.setup().await
 }

@@ -1,7 +1,7 @@
 use serde::{Serialize, Deserialize};
 use mongodb::bson::oid::ObjectId;
-use crate::models::clan::Clan;
-use crate::models::period_log::PeriodLog;
+use crate::models::current_riverrace::clan::Clan;
+use crate::models::current_riverrace::period_log::PeriodLog;
 
 #[derive(Serialize, Deserialize)]
 pub struct RiverRace{
@@ -17,7 +17,7 @@ pub struct RiverRace{
     #[serde(rename = "periodType")]
     pub period_type: String,
     #[serde(rename = "periodLogs")]
-    pub period_logs: Vec<PeriodLog>,
+    pub period_logs: Option<Vec<PeriodLog>>,
     #[serde(rename = "insertedDate")]
     pub inserted_date: i64 
 }

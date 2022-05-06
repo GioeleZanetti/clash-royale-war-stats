@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use crate::models::participants::Participants;
+use crate::models::current_riverrace::participants::Participants;
 
 #[derive(Serialize, Deserialize)]
 pub struct Clan{

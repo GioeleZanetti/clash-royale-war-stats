@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use crate::models::mini_clan::MiniClan;
+use crate::models::current_riverrace::mini_clan::MiniClan;
 
 #[derive(Serialize, Deserialize)]
 pub struct Item{

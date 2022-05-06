@@ -39,4 +39,14 @@ impl RoyaleApi{
         self.request(&url).await
     }
 
+    pub async fn request_clan_info(&self, clan_tag : &str) -> Value {
+        let url = format!("https://api.clashroyale.com/v1/clans/%23{}", &clan_tag);
+        self.request(&url).await
+    }
+
+    pub async fn request_past_riverrace(&self, clan_tag: &str) -> Value {
+        let url = format!("https://api.clashroyale.com/v1/clans/{}/riverracelog?limit=1", &clan_tag);
+        self.request(&url).await
+    }
+
 }

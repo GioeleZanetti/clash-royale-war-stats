@@ -1,6 +1,2 @@
-pub mod river_race;
-pub mod clan;
-pub mod participants;
-pub mod period_log;
-pub mod item;
-pub mod mini_clan;
+pub mod current_riverrace;
+pub mod past_riverrace;

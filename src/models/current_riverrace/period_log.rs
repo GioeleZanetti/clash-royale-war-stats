@@ -1,5 +1,5 @@
 use serde::{Serialize, Deserialize};
-use crate::models::item::Item;
+use crate::models::current_riverrace::item::Item;
 
 #[derive(Serialize, Deserialize)]
 pub struct PeriodLog{
