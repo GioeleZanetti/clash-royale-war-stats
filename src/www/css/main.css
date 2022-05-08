@@ -1,0 +1,103 @@
+*{
+    box-sizing: border-box;
+    font-family: "clash-royale";
+}
+
+nav{
+    background-color: #475CE6;
+    height: 50px;
+    width: 100%;
+    float: right;
+}
+
+nav ul{
+    width: 100%;
+    list-style-type: none;
+    overflow: hidden;
+    margin: 0;
+    padding: 0;
+    flex: 1;
+    text-align: right;
+}
+
+li{
+    display: inline;
+    float: right;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 50px;
+    line-height: 50px;
+}
+
+li a{
+    display: block;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    font-size: 10px;
+}
+
+li a:hover{
+    color: white;
+    text-decoration: none;
+}
+
+li:hover{
+    background-color: #428CFC;
+}
+
+.between-sections {
+    display: inline-block;
+    text-align: center;
+    width: 100%;
+    transform: translate(-40%, -50%);
+}
+
+h1{
+    text-align: center;
+    color: white;
+}
+
+.main-title{
+    transform: translate(+50%, +50%);
+    width: 50%;
+    display: block;
+}
+
+body{
+    height: 100%
+}
+
+.background-image{
+    background: url(../images/clan-wars.jpg) no-repeat center center fixed; 
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.main-div{
+    width: 100%;
+}
+
+.main-paragraph{
+    text-align: center;
+    color:#FBC54B;
+    transform: translate(+50%, +100%);
+    margin-top: 100px;
+    width: 50%;
+}
+
+button a, button a:hover{
+    text-decoration: none;
+    color: black;
+}
+
+.main-button{
+    margin-top: 20px;
+}
+
+@font-face {
+    font-family: "clash-royale";
+    src: url("../font/font.otf");
+}

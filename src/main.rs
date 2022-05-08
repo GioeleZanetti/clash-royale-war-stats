@@ -5,9 +5,11 @@ mod db;
 mod models;
 mod date_calculator;
 mod parser;
+mod responder;
 use handler::Handler;
 use config::Config;
 use royale_api::RoyaleApi;
+use responder::JsonResponder;
 use rocket::State;
 use db::{MongoClient, MongoDb};
 #[macro_use] extern crate rocket;
@@ -37,23 +39,27 @@ async fn main() -> Result<(), rocket::Error> {
 
 
 #[get("/player")]
-async fn player(handler: &State<Handler>) -> String {
-    handler.get_player_stats().await
+async fn player(handler: &State<Handler>) -> JsonResponder {
+    let call = handler.get_player_stats().await;
+    JsonResponder::new(call)
 }
 
 #[get("/riverrace")]
-async fn riverrace(handler: &State<Handler>) -> String {
-    handler.get_current_riverrace().await
+async fn riverrace(handler: &State<Handler>) -> JsonResponder {
+    let call = handler.get_current_riverrace().await;
+    JsonResponder::new(call)
 }
 
 #[get("/clan/<tag>")]
-async fn clan(tag: String, handler: &State<Handler>) -> String {
-    handler.get_clan_info(tag).await
+async fn clan(tag: String, handler: &State<Handler>) -> JsonResponder {
+    let call = handler.get_clan_info(tag).await;
+    JsonResponder::new(call)
 }
 
 #[get("/pastriverrace")]
-async fn past_riverrace(handler: &State<Handler>) -> String {
-    handler.get_past_riverrace().await
+async fn past_riverrace(handler: &State<Handler>) -> JsonResponder {
+    let call = handler.get_past_riverrace().await;
+    JsonResponder::new(call)
 }
 
 #[get("/riverrace")]
