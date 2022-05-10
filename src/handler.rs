@@ -8,6 +8,7 @@ use crate::date_calculator;
 use crate::models::current_riverrace::river_race::RiverRace;
 use crate::parser;
 use crate::models::past_riverrace::riverrace_log::RiverRaceLog;
+use crate::models::past_riverrace::last_riverraces::LastRiverRaces;
 
 pub struct Handler{
     api: RoyaleApi,
@@ -37,7 +38,7 @@ impl Handler{
         let deserialized: RiverRace = last_riverrace.deserialize_current().unwrap();
         let last_riverrace_date = NaiveDateTime::from_timestamp(deserialized.inserted_date, 0);
         let datetime: chrono::prelude::DateTime<Utc> = chrono::prelude::DateTime::from_utc(last_riverrace_date, Utc);
-        let date_inside = date_calculator::is_in_race_range(&datetime);
+        let date_inside = date_calculator::is_in_race_range(datetime);
         if date_inside {
             self.update_current_riverrace(deserialized, doc).await;
         }else{
@@ -91,6 +92,18 @@ impl Handler{
         let last_riverrace = self.database.find_in_collection::<RiverRaceLog>("pastriverrace", Document::new(), options).await.unwrap();
         //TODO: what if cursor is empty?
         let deserialized: RiverRaceLog = last_riverrace.deserialize_current().unwrap();
+        println!("Got last riverrace from database");
+        serde_json::to_string(&deserialized).unwrap()
+    }
+
+    pub async fn get_past_five_riverraces(&self) -> String {
+        let options = mongodb::options::FindOptions::builder().sort(doc!{"seasonId": -1}).limit(5).build();
+        let mut last_riverraces = self.database.find_in_collection::<RiverRaceLog>("pastriverrace", Document::new(), options).await.unwrap();
+        let mut deserialized = LastRiverRaces::new();
+        //TODO: what if cursor is empty?
+        while last_riverraces.advance().await.unwrap() {
+            deserialized.past_wars.push(last_riverraces.deserialize_current().unwrap());
+        }
         println!("Got last riverrace from database");
         serde_json::to_string(&deserialized).unwrap()
     }

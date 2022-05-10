@@ -1,0 +1,22 @@
+h1, h6{
+    color: black;
+    text-align: center;
+}
+
+.inner-content{
+    width: 75%;
+    display: block;
+    margin: 0 auto;
+}
+
+p{
+    width: 100%;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: #f6f6f6;
+    margin-bottom: 50px;
+}
+
+span{
+    text-align: center;
+}

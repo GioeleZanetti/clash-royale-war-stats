@@ -32,6 +32,7 @@ async fn main() -> Result<(), rocket::Error> {
         .mount("/api", routes![riverrace])
         .mount("/api", routes![clan])
         .mount("/api", routes![past_riverrace])
+        .mount("/api", routes![past_riverraces])
         .mount("/setup", routes![insert_riverrace])
         .launch()
         .await
@@ -59,6 +60,12 @@ async fn clan(tag: String, handler: &State<Handler>) -> JsonResponder {
 #[get("/pastriverrace")]
 async fn past_riverrace(handler: &State<Handler>) -> JsonResponder {
     let call = handler.get_past_riverrace().await;
+    JsonResponder::new(call)
+}
+
+#[get("/pastriverraces")]
+async fn past_riverraces(handler: &State<Handler>) -> JsonResponder {
+    let call = handler.get_past_five_riverraces().await;
     JsonResponder::new(call)
 }
 
